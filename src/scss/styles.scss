@@ -1,0 +1,30 @@
+$primary-border: black;
+
+#content {
+    width: 100%;
+    .title {
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+        img {
+        }
+        button {
+
+        }
+    }
+    #gamespace {
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+        .row {
+            // width: 100%;
+            .card {
+                // display: flex;
+                // justify-content: center;
+                padding: 10px;
+            }
+        }
+    }
+}
+

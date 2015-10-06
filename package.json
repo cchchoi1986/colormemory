@@ -1,0 +1,25 @@
+{
+  "name": "colormemory",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^2.10.2",
+    "express": "^4.13.3",
+    "gulp": "^3.9.0",
+    "gulp-browserify": "^0.5.1",
+    "gulp-imagemin": "^2.3.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-sass": "^2.0.4",
+    "gulp-uglify": "^1.4.1",
+    "jquery": "^2.1.4",
+    "lodash": "^3.10.1",
+    "node-sass": "^3.3.3"
+  }
+}
