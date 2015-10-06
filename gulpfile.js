@@ -18,7 +18,7 @@ gulp.task('scripts', function () {
         .on('error', console.error.bind(console))
         .pipe(uglify())
         .on('error', console.error.bind(console))
-        .pipe(gulp.dest('public/js'))
+        .pipe(gulp.dest('public/scripts'))
         .pipe(livereload());
 });
 
@@ -28,7 +28,7 @@ gulp.task('styles', function () {
             style: 'compressed'
         }))
         .on('error', console.error.bind(console))
-        .pipe(gulp.dest('public/css'))
+        .pipe(gulp.dest('public/styles'))
         .pipe(livereload());
 });
 

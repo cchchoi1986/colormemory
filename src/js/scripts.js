@@ -29,16 +29,19 @@ var newGame = function () {
 
 var startGame = function () {
     for (var i = 0; i < playDeck.length; i+=4) {
-        $('#gamespace').append('<div class="row"><div class="card"><img src="assets/'+playDeck[i].src+'"></div><div class="card"><img src="assets/'+playDeck[i+1].src+'"></div><div class="card"><img src="assets/'+playDeck[i+2].src+'"></div><div class="card"><img src="assets/'+playDeck[i+3].src+'"></div></div>');
+        var array = [
+            'assets/'+playDeck[i].src,
+            'assets/'+playDeck[i+1].src,
+            'assets/'+playDeck[i+2].src,
+            'assets/'+playDeck[i+3].src
+        ]
+        $('.gamespace').append('<div class="row"><div class="card"><img  class="back" src="assets/card_bg.gif"><img class="front" src="'+array[0]+'"></div><div class="card"><img  class="back" src="assets/card_bg.gif"><img class="front" src="'+array[1]+'"></div><div class="card"><img  class="back" src="assets/card_bg.gif"><img class="front" src="'+array[2]+'"></div><div class="card"><img class="back" src="assets/card_bg.gif"><img class="front" src="'+array[3]+'"></div></div>');
     }
-    // for (var i = 0; i < playDeck.length; i++) {
-    //     $('#gamespace').append('<div class="card"><img src="assets/'+playDeck[i].src+'"></div>');
-    // }
+    $('button.new-game').remove();
 }
 
 $('.new-game').on('click', function (e) {
     e.preventDefault();
-    $('#gamespace').html('');
     newGame()
     .then(function() {
         startGame();

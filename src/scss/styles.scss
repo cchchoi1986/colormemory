@@ -1,28 +1,49 @@
 $primary-border: black;
+$primary-background: #555;
 
 #content {
+    background: $primary-background;
     width: 100%;
     .title {
         display: flex;
-        justify-content: center;
-        margin: 0 auto;
+        justify-content: space-around;
+        // margin: 0 auto;
         img {
+            // flex: 1;
+            background: $primary-background;
         }
         button {
-
+            flex: 1;
+            font-size: 28px;
         }
     }
-    #gamespace {
+    .gamespace {
+        padding: 20px 0;
         display: flex;
-        justify-content: center;
-        flex-direction: row;
         flex-wrap: wrap;
+        border: 1px solid black;
         .row {
-            // width: 100%;
+            width: 100%;
+            margin: 10px 0;
+            display: flex;
+            // flex-direction: row;
+            // flex-wrap: row wrap;
             .card {
-                // display: flex;
-                // justify-content: center;
-                padding: 10px;
+                z-index: 10;
+                justify-content: center;
+                display: inline-flex;
+                flex: 1;
+                border: 1px solid white;
+                img.back {
+                    // position: absolute;
+                    // top: 25%;
+                    // left: 25%;
+                }
+                img.front {
+                    // position: absolute;
+                    // top: 25%;
+                    // right: 25%;
+                }
             }
         }
     }
