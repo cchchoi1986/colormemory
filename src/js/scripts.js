@@ -30,15 +30,60 @@ var newGame = function () {
 var startGame = function () {
     for (var i = 0; i < playDeck.length; i+=4) {
         var array = [
-            'assets/'+playDeck[i].src,
-            'assets/'+playDeck[i+1].src,
-            'assets/'+playDeck[i+2].src,
-            'assets/'+playDeck[i+3].src
-        ]
-        $('.gamespace').append('<div class="row"><div class="card"><img  class="back" src="assets/card_bg.gif"><img class="front" src="'+array[0]+'"></div><div class="card"><img  class="back" src="assets/card_bg.gif"><img class="front" src="'+array[1]+'"></div><div class="card"><img  class="back" src="assets/card_bg.gif"><img class="front" src="'+array[2]+'"></div><div class="card"><img class="back" src="assets/card_bg.gif"><img class="front" src="'+array[3]+'"></div></div>');
+            { id: i, src: 'assets/'+playDeck[i].src },
+            { id: i+1, src: 'assets/'+playDeck[i+1].src},
+            { id: i+2, src:'assets/'+playDeck[i+2].src},
+            { id: i+3, src: 'assets/'+playDeck[i+3].src}
+        ];
+        // console.log(array);
+        $('.gamespace').append('<div class="row"><div id="card'+array[0].id+'" class="card"><img  class="back" src="assets/card_bg.gif"><img class="front" src="'+array[0].src+'"></div><div id="card'+array[1].id+'"" class="card"><img  class="back" src="assets/card_bg.gif"><img class="front" src="'+array[1].src+'"></div><div id="card'+array[2].id+'" class="card"><img class="back" src="assets/card_bg.gif"><img class="front" src="'+array[2].src+'"></div><div id="card'+array[3].id+'" class="card"><img class="back" src="assets/card_bg.gif"><img class="front" src="'+array[3].src+'"></div></div>');
     }
     $('button.new-game').remove();
+    $('#card0').addClass('selected');
+    $('.gamespace').focus();
 }
+
+$('html').on('keydown', function(key) {
+    var selectedId = Number($('.selected')[0].id.replace('card',''));
+    var newSelectedId = '#card';
+    var newId = null;
+    if (key.keyCode === 38) {
+        newId = selectedId - 4;
+        if (newId >= 0) {
+            console.log('up');
+            $('.selected').removeClass().addClass('card');
+            $(newSelectedId+newId).addClass('selected');
+        }
+    }
+    if (key.keyCode === 40) {
+        newId = selectedId + 4;
+        if (newId <= 15) {
+            console.log('down');
+            console.log(newSelectedId+newId);
+            $('.selected').removeClass().addClass('card');
+            $(newSelectedId+newId).addClass('selected');
+        }
+    }
+    if (key.keyCode === 37) {
+        newId = selectedId - 1;
+        if (newId >= 0) {
+            console.log('left');
+            $('.selected').removeClass().addClass('card');
+            $(newSelectedId+newId).addClass('selected');
+        }
+    }
+    if (key.keyCode === 39) {
+        newId = selectedId + 1;
+        if (newId <= 15) {
+            console.log('right');
+            $('.selected').removeClass().addClass('card');
+            $(newSelectedId+newId).addClass('selected');
+        }
+    }
+    if (key.keyCode === 32) {
+        $('.selected.card img.back').css({'zIndex': 0});
+    }
+});
 
 $('.new-game').on('click', function (e) {
     e.preventDefault();

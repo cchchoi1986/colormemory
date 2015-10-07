@@ -1,8 +1,9 @@
 $primary-border: black;
 $primary-background: #555;
+$secondary-background: #888;
+$selected-background: #E23E3E;
 
 #content {
-    background: $primary-background;
     width: 100%;
     .title {
         display: flex;
@@ -10,7 +11,7 @@ $primary-background: #555;
         // margin: 0 auto;
         img {
             // flex: 1;
-            background: $primary-background;
+            background: $secondary-background;
         }
         button {
             flex: 1;
@@ -18,13 +19,14 @@ $primary-background: #555;
         }
     }
     .gamespace {
-        padding: 20px 0;
+        background: $primary-background;
+        // padding: 20px 0;
         display: flex;
         flex-wrap: wrap;
         border: 1px solid black;
         .row {
             width: 100%;
-            margin: 10px 0;
+            // margin: 10px 0;
             display: flex;
             // flex-direction: row;
             // flex-wrap: row wrap;
@@ -33,17 +35,24 @@ $primary-background: #555;
                 justify-content: center;
                 display: inline-flex;
                 flex: 1;
+                padding: 2% 0;
                 border: 1px solid white;
                 img.back {
-                    // position: absolute;
+                    position: relative;
                     // top: 25%;
-                    // left: 25%;
+                    left: 40px;
+                    z-index: 10;
+                    border: 1px solid black;
                 }
                 img.front {
-                    // position: absolute;
+                    position: relative;
                     // top: 25%;
-                    // right: 25%;
+                    right: 41px;
+                    z-index: 1;
                 }
+            }
+            .card.selected {
+                background: $selected-background;
             }
         }
     }
