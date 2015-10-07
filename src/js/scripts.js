@@ -1,5 +1,6 @@
 var $ = require('jquery'),
     Promise = require('bluebird'),
+    totalScore = 0,
     playDeck = [];
 
 var newGame = function () {

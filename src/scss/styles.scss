@@ -19,11 +19,11 @@ $selected-background: #E23E3E;
         }
     }
     .gamespace {
-        background: $primary-background;
+        // background: $primary-background;
         // padding: 20px 0;
         display: flex;
         flex-wrap: wrap;
-        border: 1px solid black;
+        // border: 1px solid black;
         .row {
             width: 100%;
             // margin: 10px 0;
@@ -39,22 +39,35 @@ $selected-background: #E23E3E;
                 border: 1px solid white;
                 img.back {
                     position: relative;
-                    // top: 25%;
                     left: 40px;
                     z-index: 10;
                     border: 1px solid black;
+                    box-shadow: 2px 2px 5px black;
                 }
                 img.front {
                     position: relative;
-                    // top: 25%;
-                    right: 41px;
+                    border: 1px solid black;
+                    right: 42px;
                     z-index: 1;
                 }
             }
             .card.selected {
                 background: $selected-background;
+                animation: pulse 3s infinite;
             }
         }
+    }
+}
+
+@keyframes pulse {
+    0% {
+        background-color: yellow;
+    }
+    50% {
+        background-color: $selected-background;
+    }
+    100% {
+        background-color: yellow;
     }
 }
 
