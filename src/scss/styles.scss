@@ -4,21 +4,26 @@ $secondary-background: #888;
 $selected-background: #E23E3E;
 
 #content {
-    width: 100%;
+    width: 576px;
+    width: 720px;
     .title {
         display: flex;
+        height: 50px;
         justify-content: space-around;
         // margin: 0 auto;
         img {
-            // flex: 1;    
+            flex: 1;    
             background: $secondary-background;
         }
         button {
-            // flex: 1;
+            flex: 3;
             font-size: 28px;
         }
         .instructions {
-            // flex: 2;
+            p{
+                margin: 0;
+            }
+            flex: 3;
             border: 1px solid black;
             .score {
                 font-size: 22px;
@@ -44,7 +49,7 @@ $selected-background: #E23E3E;
                 justify-content: center;
                 display: inline-flex;
                 flex: 1;
-                padding: 2% 0;
+                // padding: 2% 0;
                 border: 1px solid white;
                 img.back {
                     position: relative;
@@ -66,6 +71,21 @@ $selected-background: #E23E3E;
             }
         }
     }
+    .scoreboard {
+        width: 100%;
+        background: black;
+        color: white;
+        thead th {
+            flex: 1;
+        }
+        tbody tr td {
+            flex: 1;
+        }
+    }
+}
+
+.hidden {
+    display: none;
 }
 
 @keyframes pulse {
