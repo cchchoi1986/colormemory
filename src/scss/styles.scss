@@ -10,12 +10,21 @@ $selected-background: #E23E3E;
         justify-content: space-around;
         // margin: 0 auto;
         img {
-            // flex: 1;
+            // flex: 1;    
             background: $secondary-background;
         }
         button {
-            flex: 1;
+            // flex: 1;
             font-size: 28px;
+        }
+        .instructions {
+            // flex: 2;
+            border: 1px solid black;
+            .score {
+                font-size: 22px;
+                color: blue;
+                margin: 0 0 0 10px;
+            }
         }
     }
     .gamespace {

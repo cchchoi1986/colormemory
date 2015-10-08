@@ -1,7 +1,15 @@
 var $ = require('jquery'),
     Promise = require('bluebird'),
+    Firebase = require("firebase"),
     totalScore = 0,
-    playDeck = [];
+    playDeck = [],
+    matchPair = [],
+    matchedColourIds = [],
+    myFirebaseRef = new Firebase("https://sweltering-heat-9320.firebaseio.com/Records"),
+    loading = false,
+    playerName = '';
+
+$('.instructions').hide();
 
 var newGame = function () {
     return new Promise(function(resolve, reject) {
@@ -40,51 +48,139 @@ var startGame = function () {
         $('.gamespace').append('<div class="row"><div id="card'+array[0].id+'" class="card"><img  class="back" src="assets/card_bg.gif"><img class="front" src="'+array[0].src+'"></div><div id="card'+array[1].id+'"" class="card"><img  class="back" src="assets/card_bg.gif"><img class="front" src="'+array[1].src+'"></div><div id="card'+array[2].id+'" class="card"><img class="back" src="assets/card_bg.gif"><img class="front" src="'+array[2].src+'"></div><div id="card'+array[3].id+'" class="card"><img class="back" src="assets/card_bg.gif"><img class="front" src="'+array[3].src+'"></div></div>');
     }
     $('button.new-game').remove();
+    $('.instructions').show();
     $('#card0').addClass('selected');
     $('.gamespace').focus();
 }
 
+$.ajax({
+    type: 'GET',
+    url: 'https://sweltering-heat-9320.firebaseio.com/Records.json'
+})
+.success(function(res){
+    console.log('success', res);
+})
+.error(function(res){
+    console.log('err', res)
+});
+
 $('html').on('keydown', function(key) {
-    var selectedId = Number($('.selected')[0].id.replace('card',''));
-    var newSelectedId = '#card';
-    var newId = null;
-    if (key.keyCode === 38) {
-        newId = selectedId - 4;
-        if (newId >= 0) {
-            console.log('up');
-            $('.selected').removeClass().addClass('card');
-            $(newSelectedId+newId).addClass('selected');
+    if (!loading) {
+        var selectedId = Number($('.selected')[0].id.replace('card',''));
+        var regexColour = new RegExp(/colour./);
+        var selectedColourId = $('.selected img.front')[0].src.match(regexColour)[0].replace('colour','');
+        var newSelectedId = '#card';
+        var newId = null;
+        // console.log('colour', selectedColourId);
+        if (key.keyCode === 38) {
+            key.preventDefault();
+            newId = selectedId - 4;
+            if (newId >= 0) {
+                // console.log('up');
+                $('.selected').removeClass().addClass('card');
+                $(newSelectedId+newId).addClass('selected');
+            }
+        }
+        if (key.keyCode === 40) {
+            key.preventDefault();
+            newId = selectedId + 4;
+            if (newId <= 15) {
+                // console.log('down');
+                $('.selected').removeClass().addClass('card');
+                $(newSelectedId+newId).addClass('selected');
+            }
+        }
+        if (key.keyCode === 37) {
+            key.preventDefault();
+            newId = selectedId - 1;
+            if (newId >= 0) {
+                // console.log('left');
+                $('.selected').removeClass().addClass('card');
+                $(newSelectedId+newId).addClass('selected');
+            }
+        }
+        if (key.keyCode === 39) {
+            key.preventDefault();
+            newId = selectedId + 1;
+            if (newId <= 15) {
+                // console.log('right');
+                $('.selected').removeClass().addClass('card');
+                $(newSelectedId+newId).addClass('selected');
+            }
+        }
+        if (key.keyCode === 32) {
+            key.preventDefault();
+            $('.selected.card img.back').css({'zIndex': 0});
+            // console.log('length', matchPair.length);
+            // console.log('selectedId', selectedId);
+            // if (matchPair[0]) {
+            //     console.log('matchPair', matchPair[0].id, selectedId === matchPair[0].id);
+            // })
+            console.log('selected', selectedColourId, $.inArray(selectedColourId, matchedColourIds));
+            if ($.inArray(selectedColourId, matchedColourIds) === -1) {
+                if (matchPair.length!=0) {
+                    if (selectedId != matchPair[0].id) {
+                        // console.log('not same id');
+                        if (matchPair.length > 0) {
+                            matchPair.push({ id: selectedId, colour: selectedColourId });
+                            // console.log('> 0', matchPair);
+                            if (matchPair[0].colour === matchPair[1].colour) {
+                                // console.log('matching', matchPair);
+                                matchedColourIds.push(matchPair[0].colour);
+                                console.log(matchedColourIds.length, matchedColourIds);
+                                totalScore++;
+                                $('.score').text(totalScore);
+                                matchPair = [];
+                            } else {
+                                var delay;
+                                // console.log('not matching', matchPair);
+                                // console.log('huh', newSelectedId+matchPair[0].id, newSelectedId+matchPair[1].id);
+                                var hideCards = function () {
+                                    $(newSelectedId+matchPair[0].id+' .back').css({'zIndex': 10});
+                                    $(newSelectedId+matchPair[1].id+' .back').css({'zIndex': 10});
+                                    matchPair = [];
+                                    clearInterval(delay);
+                                    loading = false
+                                };
+                                var lastLook = function () {
+                                    loading = true
+                                    delay = setInterval(hideCards, 200);
+                                }
+                                lastLook();
+                                totalScore--;
+                                $('.score').text(totalScore);
+                            }
+                        }
+                    }
+                } else {
+                    matchPair.push({ id: selectedId, colour: selectedColourId});
+                    // console.log('new pair', matchPair);
+                }
+            } else {
+                console.log('color already matched');
+            }
         }
     }
-    if (key.keyCode === 40) {
-        newId = selectedId + 4;
-        if (newId <= 15) {
-            console.log('down');
-            console.log(newSelectedId+newId);
-            $('.selected').removeClass().addClass('card');
-            $(newSelectedId+newId).addClass('selected');
-        }
-    }
-    if (key.keyCode === 37) {
-        newId = selectedId - 1;
-        if (newId >= 0) {
-            console.log('left');
-            $('.selected').removeClass().addClass('card');
-            $(newSelectedId+newId).addClass('selected');
-        }
-    }
-    if (key.keyCode === 39) {
-        newId = selectedId + 1;
-        if (newId <= 15) {
-            console.log('right');
-            $('.selected').removeClass().addClass('card');
-            $(newSelectedId+newId).addClass('selected');
-        }
-    }
-    if (key.keyCode === 32) {
-        $('.selected.card img.back').css({'zIndex': 0});
+    if (matchedColourIds.length > 7) {
+        playerName = prompt("You win!  Please enter your name");
+        $('.gamespace').remove();
+        myFirebaseRef.push({
+            Score: totalScore,
+            Player: playerName,
+        });
+        $.ajax({
+            type: 'GET',
+            url: 'https://sweltering-heat-9320.firebaseio.com/Records.json'
+        })
+        .success(function(res){
+            console.log('success', res);
+        })
+        .error(function(res){
+            console.log('err', res)
+        });
     }
 });
+
 
 $('.new-game').on('click', function (e) {
     e.preventDefault();
