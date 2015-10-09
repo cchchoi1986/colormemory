@@ -16,7 +16,7 @@ gulp.task('scripts', function () {
     gulp.src('src/js/**.js')
         .pipe(browserify())
         .on('error', console.error.bind(console))
-        // .pipe(uglify())
+        .pipe(uglify())
         .on('error', console.error.bind(console))
         .pipe(gulp.dest('public/scripts'))
         .pipe(livereload());
@@ -51,6 +51,6 @@ gulp.task('watch', function () {
 });
 
 // DEVELOPMENT (with watch)
-gulp.task('default', ['main', 'scripts', 'styles', 'assets', 'watch']);
+// gulp.task('default', ['main', 'scripts', 'styles', 'assets', 'watch']);
 // PRODUCTION
 gulp.task('default', ['main', 'scripts', 'styles', 'assets']);
