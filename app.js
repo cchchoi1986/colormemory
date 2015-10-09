@@ -21,7 +21,7 @@ app.post('/sendEmail', urlencodedParser, function (req, res) {
             from: 'Color Memory <postmaster@mailgun.choiclement.com>',
             to: req.body.email,
             subject: 'Color Memory Ranking',
-            text: 'Congratulations '+req.body.name+',\n\n your score of '+req.body.score+' is ranked '+req.body.rank+' on the all time leaderboards.\n\n  Thanks for playing!'
+            text: 'Congratulations '+req.body.name+',\n\nYour score of '+req.body.score+' is ranked '+req.body.rank+' on the all time leaderboards.\n\nThanks for playing!'
         };
         mailgun.messages()
         .send(data, function (error, body) {
