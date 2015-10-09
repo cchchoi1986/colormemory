@@ -13,11 +13,11 @@ To install the app:
     ```
 3. run the following commands in your console.
     ```
-    git clone https://github.com/cchchoi1986/colormemory.git
-    cd colormemory
-    npm install
-    gulp
-    npm start
+    $ git clone https://github.com/cchchoi1986/colormemory.git
+    $ cd colormemory
+    $ npm install
+    $ gulp
+    $ npm start
     ```
 4. open browser window to http://localhost:8000 and try to beat my score
 
