@@ -7,6 +7,7 @@ $selected-background: #E23E3E;
     max-height: 576px;
     max-width: 720px;
     // background: black;
+    // border: 1px solid black;
     .title {
         display: flex;
         // height: 50px;
@@ -18,7 +19,7 @@ $selected-background: #E23E3E;
         div.new-game {
             flex: 3;
             font-size: 28px;
-            animation: pulse 2s infinite;
+            // animation: pulse 2s infinite;
             text-align: center;
             padding: 20px;
 
@@ -44,6 +45,7 @@ $selected-background: #E23E3E;
     .gamespace {
         // background: $primary-background;
         // padding: 20px 0;
+        height: 496px;
         display: flex;
         flex-wrap: wrap;
         // border: 1px solid black;
@@ -76,11 +78,27 @@ $selected-background: #E23E3E;
             }
             .card.selected {
                 border-radius: 50px;
-                background: $selected-background;
+                // background: $selected-background;
                 animation: pulse 5s infinite;
             }
         }
+        .restart {
+            color: pink;
+            text-transform: capitalize;
+            font-size: 28px;
+            font-family: sans-serif;
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            margin: auto;
+        }
     }
+}
+
+.cleared {
+    // color: rgba(255,255,255,1);
+    // background: rgba(255,255,255,1);
+    opacity: 0;
 }
 
 .hidden {
@@ -92,7 +110,7 @@ $selected-background: #E23E3E;
         background: yellow;
     }
     10% {
-        background: white;
+        background: #eee;
     }
     20% {
         background: orange;
@@ -113,7 +131,7 @@ $selected-background: #E23E3E;
         background: pink;
     }
     80% {
-        background: black;
+        background: #111;
     }
     90% {
         background: lime;

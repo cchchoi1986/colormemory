@@ -9,7 +9,8 @@ var $ = require('jquery'),
     loading = false,
     playerName = '',
     started = false,
-    allScores = [];
+    allScores = [],
+    ended = false;
 
 var newGame = function () {
     return new Promise(function(resolve, reject) {
@@ -43,139 +44,186 @@ var startGame = function () {
     $('.gamespace').focus();
 }
 
+var sendEmail = function (email, name, score, rank) {
+    $.ajax({
+        url: '/sendEmail',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            'subject': 'Color Memory Rank',
+            'to': 'cchchoi1986@gmail.com',
+            'text': 'Testing some Mailgun awesomness!'
+        }
+    })
+    .success(function(e) {
+        console.log('success', e);
+    })
+    .error(function(e) {
+        console.log('error', e);
+    })
+    // curl -s --user 'api:key-27d2e6bfc477cdf511fedcbd6f28951c' \
+    //     https://api.mailgun.net/v3/mailgun.choiclement.com/messages \
+    //     -F from='Color Memory <mailgun@mailgun.choiclement.com>' \
+    //     -F to=cchchoi1986@gmail.com \
+    //     -F subject='Color Memory Rank' \
+    //     -F text='Testing some Mailgun awesomness!'
+}
+sendEmail();
+
 var gameOn = function () {
     $('html').on('keydown', function(key) {
-        if (!loading) {
-            var selectedId = Number($('.selected')[0].id.replace('card',''));
-            var regexColour = new RegExp(/colour./);
-            var selectedColourId = $('.selected img.front')[0].src.match(regexColour)[0].replace('colour','');
-            var newSelectedId = '#card';
-            var newId = null;
-            // console.log('colour', selectedColourId);
-            if (key.keyCode === 38) {
-                key.preventDefault();
-                newId = selectedId - 4;
-                if (newId >= 0) {
-                    // console.log('up');
-                    $('.selected').removeClass().addClass('card');
-                    $(newSelectedId+newId).addClass('selected');
+        if (!ended) {
+            if (!loading) {
+                var selectedId = Number($('.selected')[0].id.replace('card',''));
+                var regexColour = new RegExp(/colour./);
+                var selectedColourId = $('.selected img.front')[0].src.match(regexColour)[0].replace('colour','');
+                var newSelectedId = '#card';
+                var newId = null;
+                // console.log('colour', selectedColourId);
+                if (key.keyCode === 38) {
+                    key.preventDefault();
+                    newId = selectedId - 4;
+                    if (newId >= 0) {
+                        // console.log('up');
+                        $('.selected').removeClass().addClass('card');
+                        $(newSelectedId+newId).addClass('selected');
+                    }
                 }
-            }
-            if (key.keyCode === 40) {
-                key.preventDefault();
-                newId = selectedId + 4;
-                if (newId <= 15) {
-                    // console.log('down');
-                    $('.selected').removeClass().addClass('card');
-                    $(newSelectedId+newId).addClass('selected');
+                if (key.keyCode === 40) {
+                    key.preventDefault();
+                    newId = selectedId + 4;
+                    if (newId <= 15) {
+                        // console.log('down');
+                        $('.selected').removeClass().addClass('card');
+                        $(newSelectedId+newId).addClass('selected');
+                    }
                 }
-            }
-            if (key.keyCode === 37) {
-                key.preventDefault();
-                newId = selectedId - 1;
-                if (newId >= 0) {
-                    // console.log('left');
-                    $('.selected').removeClass().addClass('card');
-                    $(newSelectedId+newId).addClass('selected');
+                if (key.keyCode === 37) {
+                    key.preventDefault();
+                    newId = selectedId - 1;
+                    if (newId >= 0) {
+                        // console.log('left');
+                        $('.selected').removeClass().addClass('card');
+                        $(newSelectedId+newId).addClass('selected');
+                    }
                 }
-            }
-            if (key.keyCode === 39) {
-                key.preventDefault();
-                newId = selectedId + 1;
-                if (newId <= 15) {
-                    // console.log('right');
-                    $('.selected').removeClass().addClass('card');
-                    $(newSelectedId+newId).addClass('selected');
+                if (key.keyCode === 39) {
+                    key.preventDefault();
+                    newId = selectedId + 1;
+                    if (newId <= 15) {
+                        // console.log('right');
+                        $('.selected').removeClass().addClass('card');
+                        $(newSelectedId+newId).addClass('selected');
+                    }
                 }
-            }
-            if (key.keyCode === 13) {
-                key.preventDefault();
-                $('.selected.card img.back').css({'zIndex': 0});
-                // console.log('length', matchPair.length);
-                // console.log('selectedId', selectedId);
-                // if (matchPair[0]) {
-                //     console.log('matchPair', matchPair[0].id, selectedId === matchPair[0].id);
-                // })
-                console.log('selected', selectedColourId, $.inArray(selectedColourId, matchedColourIds));
-                if ($.inArray(selectedColourId, matchedColourIds) === -1) {
-                    if (matchPair.length!=0) {
-                        if (selectedId != matchPair[0].id) {
-                            // console.log('not same id');
-                            if (matchPair.length > 0) {
-                                matchPair.push({ id: selectedId, colour: selectedColourId });
-                                // console.log('> 0', matchPair);
-                                if (matchPair[0].colour === matchPair[1].colour) {
-                                    // console.log('matching', matchPair);
-                                    matchedColourIds.push(matchPair[0].colour);
-                                    console.log(matchedColourIds.length, matchedColourIds);
-                                    totalScore++;
-                                    $('.score').text(totalScore);
-                                    matchPair = [];
-                                } else {
-                                    var delay;
-                                    // console.log('not matching', matchPair);
-                                    // console.log('huh', newSelectedId+matchPair[0].id, newSelectedId+matchPair[1].id);
-                                    var hideCards = function () {
-                                        $(newSelectedId+matchPair[0].id+' .back').css({'zIndex': 10});
-                                        $(newSelectedId+matchPair[1].id+' .back').css({'zIndex': 10});
-                                        matchPair = [];
-                                        clearInterval(delay);
-                                        loading = false
-                                    };
-                                    var lastLook = function () {
-                                        loading = true
-                                        delay = setInterval(hideCards, 200);
+                if (key.keyCode === 13) {
+                    key.preventDefault();
+                    $('.selected.card img.back').css({'zIndex': 0});
+                    // console.log('length', matchPair.length);
+                    // console.log('selectedId', selectedId);
+                    // if (matchPair[0]) {
+                    //     console.log('matchPair', matchPair[0].id, selectedId === matchPair[0].id);
+                    // })
+                    console.log('selected', selectedColourId, $.inArray(selectedColourId, matchedColourIds));
+                    if ($.inArray(selectedColourId, matchedColourIds) === -1) {
+                        if (matchPair.length!=0) {
+                            if (selectedId != matchPair[0].id) {
+                                // console.log('not same id');
+                                if (matchPair.length > 0) {
+                                    matchPair.push({ id: selectedId, colour: selectedColourId });
+                                    // console.log('> 0', matchPair);
+                                    if (matchPair[0].colour === matchPair[1].colour) {
+                                        // console.log('matching', matchPair);
+                                        matchedColourIds.push(matchPair[0].colour);
+                                        // console.log(matchedColourIds.length, matchedColourIds);
+                                        var clearCards = function () {
+                                            $(newSelectedId+matchPair[0].id+' .back').addClass('cleared');
+                                            $(newSelectedId+matchPair[1].id+' .back').addClass('cleared');
+                                            $(newSelectedId+matchPair[0].id+' .front').addClass('cleared');
+                                            $(newSelectedId+matchPair[1].id+' .front').addClass('cleared');
+                                            matchPair = [];
+                                            clearInterval(delay);
+                                            loading = false
+                                        };
+                                        var lastLook = function () {
+                                            loading = true
+                                            delay = setInterval(clearCards, 200);
+                                        }
+                                        lastLook();
+                                        totalScore++;
+                                        $('.score').text(totalScore);
+                                        // matchPair = [];
+                                    } else {
+                                        var delay;
+                                        // console.log('not matching', matchPair);
+                                        // console.log('huh', newSelectedId+matchPair[0].id, newSelectedId+matchPair[1].id);
+                                        var hideCards = function () {
+                                            $(newSelectedId+matchPair[0].id+' .back').css({'zIndex': 10});
+                                            $(newSelectedId+matchPair[1].id+' .back').css({'zIndex': 10});
+                                            matchPair = [];
+                                            clearInterval(delay);
+                                            loading = false
+                                        };
+                                        var lastLook = function () {
+                                            loading = true
+                                            delay = setInterval(hideCards, 200);
+                                        }
+                                        lastLook();
+                                        totalScore--;
+                                        $('.score').text(totalScore);
                                     }
-                                    lastLook();
-                                    totalScore--;
-                                    $('.score').text(totalScore);
                                 }
                             }
+                        } else {
+                            matchPair.push({ id: selectedId, colour: selectedColourId});
+                            // console.log('new pair', matchPair);
                         }
                     } else {
-                        matchPair.push({ id: selectedId, colour: selectedColourId});
-                        // console.log('new pair', matchPair);
+                        console.log('color already matched');
                     }
-                } else {
-                    console.log('color already matched');
                 }
             }
-        }
-        if (matchedColourIds.length > 7) {
-            playerName = prompt("You win!  Please enter your name");
-            playerEmail = prompt("Please enter your email");
-            $('.gamespace').remove();
-            myFirebaseRef.push({
-                Score: totalScore,
-                Player: playerName,
-                Email: playerEmail
-            });
-            $.ajax({
-                type: 'GET',
-                url: 'https://sweltering-heat-9320.firebaseio.com/Records.json'
-            })
-            .success(function(res){
-                // console.log('success', res);
-                return new Promise(function(resolve, reject) {
-                    for (var key in res) {
-                        if (res.hasOwnProperty(key)) {
-                            allScores.push(res[key]);
-                        }
-                    }
-                    resolve();
+            if (matchedColourIds.length > 7) {
+                playerName = prompt("You win!  Please enter your name");
+                playerEmail = prompt("Please enter your email");
+                // $('.gamespace').remove();
+                $('.gamespace').html('<div class="restart">Press Enter to Restart</div>')
+                myFirebaseRef.push({
+                    Score: totalScore,
+                    Player: playerName,
+                    Email: playerEmail
+                });
+                $.ajax({
+                    type: 'GET',
+                    url: 'https://sweltering-heat-9320.firebaseio.com/Records.json'
                 })
-                .then(function(){
-                    allScores = allScores.sort(function(a, b) {
-                        return a.Score < b.Score;
+                .success(function(res){
+                    // console.log('success', res);
+                    return new Promise(function(resolve, reject) {
+                        for (var key in res) {
+                            if (res.hasOwnProperty(key)) {
+                                allScores.push(res[key]);
+                            }
+                        }
+                        resolve();
+                    })
+                    .then(function(){
+                        allScores = allScores.sort(function(a, b) {
+                            return a.Score < b.Score;
+                        });
+                    })
+                    .then(function(){
+                        console.log(allScores);
+                        sendEmail(playerEmail, playerName, 69, 8);
+                        ended = true;
                     });
                 })
-                .then(function(){
-                    console.log(allScores);
+                .error(function(res){
+                    console.log('err', res)
                 });
-            })
-            .error(function(res){
-                console.log('err', res)
-            });
+            }
+        } else {
+            location.reload();
         }
     });
 }
