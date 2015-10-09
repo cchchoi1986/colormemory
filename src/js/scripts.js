@@ -17,10 +17,7 @@ var newGame = function () {
         var combined = deck.concat(deck);
         while (combined.length > 0) {
             var index = Math.floor(Math.random()*combined.length);
-            // console.log(index);
             playDeck.push(combined.splice(index,1)[0]);
-            // console.log('length',combined.length);
-            // console.log('playing Deck', playDeck.length , playDeck);
         };
         resolve();
     });

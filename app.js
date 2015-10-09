@@ -3,8 +3,8 @@ var express = require('express'),
     http = require('http'),
     path = require('path'),
     app = express(),
-    api_key = 'key-27d2e6bfc477cdf511fedcbd6f28951c',
-    domain = 'mailgun.choiclement.com',
+    api_key = require('./key.js').API_KEY,
+    domain = require('./key.js').DOMAIN,
     mailgun = require('mailgun-js')({apiKey: api_key, domain: domain}),
     bodyParser = require('body-parser');
 
@@ -26,7 +26,7 @@ app.post('/sendEmail', urlencodedParser, function (req, res) {
         mailgun.messages()
         .send(data, function (error, body) {
             console.log(body);
-            res.send(200);
+            return res.sendStatus(200);
         });
     }
 });
