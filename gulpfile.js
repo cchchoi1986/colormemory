@@ -50,4 +50,7 @@ gulp.task('watch', function () {
     var server = livereload({start: true});
 });
 
+// DEVELOPMENT (with watch)
 gulp.task('default', ['main', 'scripts', 'styles', 'assets', 'watch']);
+// PRODUCTION
+gulp.task('default', ['main', 'scripts', 'styles', 'assets']);

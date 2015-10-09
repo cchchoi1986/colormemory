@@ -37,7 +37,7 @@ var startGame = function () {
         // console.log(array);
         $('.gamespace').append('<div class="row"><div id="card'+array[0].id+'" class="card"><img  class="back" src="assets/card_bg.gif"><img class="front" src="'+array[0].src+'"></div><div id="card'+array[1].id+'"" class="card"><img  class="back" src="assets/card_bg.gif"><img class="front" src="'+array[1].src+'"></div><div id="card'+array[2].id+'" class="card"><img class="back" src="assets/card_bg.gif"><img class="front" src="'+array[2].src+'"></div><div id="card'+array[3].id+'" class="card"><img class="back" src="assets/card_bg.gif"><img class="front" src="'+array[3].src+'"></div></div>');
     }
-    $('button.new-game').remove();
+    $('div.new-game').remove();
     $('.instructions').removeClass('hidden');
     $('#card0').addClass('selected');
     $('.gamespace').focus();
@@ -180,9 +180,9 @@ var gameOn = function () {
     });
 }
 
-
 $('html').on('keydown', function (key) {
     key.preventDefault();
+    // console.log('hihi');
     if (key.keyCode === 13 && !started) {
         started = true;
         newGame()

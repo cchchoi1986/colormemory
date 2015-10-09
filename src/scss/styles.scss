@@ -4,31 +4,40 @@ $secondary-background: #888;
 $selected-background: #E23E3E;
 
 #content {
-    width: 576px;
-    width: 720px;
+    max-height: 576px;
+    max-width: 720px;
+    // background: black;
     .title {
         display: flex;
-        height: 50px;
+        // height: 50px;
         justify-content: space-around;
-        // margin: 0 auto;
         img {
-            flex: 1;    
+            flex: 1;
             background: $secondary-background;
         }
-        button {
+        div.new-game {
             flex: 3;
             font-size: 28px;
+            animation: pulse 2s infinite;
+            text-align: center;
+            padding: 20px;
+
         }
         .instructions {
-            p{
-                margin: 0;
-            }
+            text-align: center;
             flex: 3;
             border: 1px solid black;
-            .score {
-                font-size: 22px;
-                color: blue;
-                margin: 0 0 0 10px;
+            p{
+                margin: 0;
+                line-height: 38px;
+                text-transform: uppercase;
+                font-family: sans-serif;
+                .score {
+                    font-size: 22px;
+                    color: blue;
+                    margin: 0 0 0 10px;
+                    text-transform: capitalize;
+                }
             }
         }
     }
@@ -49,7 +58,7 @@ $selected-background: #E23E3E;
                 justify-content: center;
                 display: inline-flex;
                 flex: 1;
-                // padding: 2% 0;
+                padding: 1% 0;
                 border: 1px solid white;
                 img.back {
                     position: relative;
@@ -66,20 +75,10 @@ $selected-background: #E23E3E;
                 }
             }
             .card.selected {
+                border-radius: 50px;
                 background: $selected-background;
-                animation: pulse 3s infinite;
+                animation: pulse 5s infinite;
             }
-        }
-    }
-    .scoreboard {
-        width: 100%;
-        background: black;
-        color: white;
-        thead th {
-            flex: 1;
-        }
-        tbody tr td {
-            flex: 1;
         }
     }
 }
@@ -90,13 +89,37 @@ $selected-background: #E23E3E;
 
 @keyframes pulse {
     0% {
-        background-color: yellow;
+        background: yellow;
+    }
+    10% {
+        background: white;
+    }
+    20% {
+        background: orange;
+    }
+    30% {
+        background: purple;
+    }
+    40% {
+        background: brown;
     }
     50% {
-        background-color: $selected-background;
+        background: $selected-background;
+    }
+    60% {
+        background: maroon;
+    }
+    70% {
+        background: pink;
+    }
+    80% {
+        background: black;
+    }
+    90% {
+        background: lime;
     }
     100% {
-        background-color: yellow;
+        background: green;
     }
 }
 
